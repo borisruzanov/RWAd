@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--a custom listitem view-->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/model_list_container"
+    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="3dp"
+    app:cardUseCompatPadding="true">
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="4"
+    android:layout_margin="7dp">
+
+    <ImageView
+        android:id="@+id/model_list_imgview"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_weight="1"
+        android:padding="5dp"/>
+    <TextView
+        android:layout_margin="5dp"
+        android:padding="3dp"
+        android:id="@+id/model_list_txtview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="hello"
+        android:textSize="16sp"/>
+    <Button
+        android:id="@+id/model_list_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DEL"/>
+</LinearLayout>
+</androidx.cardview.widget.CardView>
