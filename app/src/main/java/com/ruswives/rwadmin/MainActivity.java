@@ -1,45 +1,33 @@
 package com.ruswives.rwadmin;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.ruswives.rwadmin.model.FsUser;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ruswives.rwadmin.view.FemaleActivity;
 import com.ruswives.rwadmin.view.MaleActivity;
+import com.ruswives.rwadmin.view.VideoApprovalActivity;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.ruswives.rwadmin.Consts.RC_SIGN_IN;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button mFemaleButton;
     private Button mMaleButton;
-
+    private Button mVideoButton;
+    private Button mLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +49,60 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(maleIntent);
             }
         });
+        mVideoButton=findViewById(R.id.main_video);
+        mVideoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FirebaseAuth.getInstance().getCurrentUser()!=null){
+                    startActivity(new Intent(MainActivity.this, VideoApprovalActivity.class));
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please first login",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mLogin=findViewById(R.id.main_login);
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callAuthWindow();
+            }
+        });
+
     }
 
+    /**
+     * Calling auth window to log in
+     */
+    public void callAuthWindow() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==RC_SIGN_IN){
+            if (data!=null)
+            {
+                if (resultCode==RESULT_OK){
+                    Toast.makeText(getApplicationContext(),"Login successful",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Login failed,try again",Toast.LENGTH_LONG).show();
+                    Log.w("Login","Login failed with result_code->>"+resultCode);
+                }
+            }else{
+                Toast.makeText(getApplicationContext(),"Login failed,try again",Toast.LENGTH_LONG).show();
+                Log.w("Login","Login failed data is null");
+            }
+        }
+    }
 }

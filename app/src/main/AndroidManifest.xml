@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MaleActivity"></activity>
+        <activity android:name=".view.VideoApprovalActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".view.MaleActivity" />
         <activity android:name=".view.FemaleActivity" />
         <activity android:name=".ShareEditPreview" />
         <activity android:name=".MainActivity">
