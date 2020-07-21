@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SOC FEMALE1"/>
+        android:text="SOC FEMALE12"/>
 
     <Button
         android:id="@+id/main_soc_male"
